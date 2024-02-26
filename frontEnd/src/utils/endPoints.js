@@ -1,0 +1,10 @@
+export const USER_LOGIN = '/api/user/login';
+export const USER_SIGNUP = '/api/user';
+export const SEARCH_USERS = '/api/user/search';
+export const ACCESS_AND_FETCH_CHAT = '/api/chat';
+export const CREATE_GRP = '/api/chat/creategrp';
+export const RENAME_GRP = '/api/chat/renamegrp';
+export const ADD_TO_GRP = '/api/chat/groupadd';
+export const REMOVE_FROM_GRP = '/api/chat/groupremove';
+export const UPDATE_GRP = '/api/chat/groupupdate';
+export const MESSAGE = '/api/message';

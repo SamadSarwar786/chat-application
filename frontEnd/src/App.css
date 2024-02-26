@@ -1,0 +1,19 @@
+.App {
+  min-height: 100vh;
+  background-image: url("./images/blue-wall-background.jpg");
+  background-size: cover;
+  box-sizing: border-box;
+  /* Custom scrollbar styles for WebKit browsers (Chrome, Safari) */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #38b2ac; /* Scrollbar thumb color */
+    border-radius: 6px; /* Optional: Rounded corners */
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: #e8e8e8; /* Scrollbar track color */
+  }
+}
