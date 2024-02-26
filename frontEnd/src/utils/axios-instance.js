@@ -4,11 +4,11 @@ import { store } from "../store";
 
 // Set up Axios interceptor to automatically add the Authorization header
 const NETWORK_TIMEOUT = parseInt(process.env.REACT_APP_API_TIMEOUT) || 3000;
-const baseURL = process.env.BASE_URL || "http://localhost:5000";
-console.log('baseURL',baseURL);
+// const baseURL = process.env.BASE_URL || "http://localhost:5000";
+// console.log('baseURL',baseURL);
 
 const axiosDefaultConfig = {
-  baseURL,
+  // baseURL,
   headers: {
     "Content-Type": "application/json",
   },
