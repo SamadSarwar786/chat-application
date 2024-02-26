@@ -54,7 +54,7 @@ const SignUp = () => {
     };
     try {
       const { user } = await axios.post(
-        "http://localhost:5000/api/user",
+        "/api/user",
         formData,
         config
       );

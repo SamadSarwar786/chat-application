@@ -12,7 +12,7 @@ import { store } from "..";
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000",
+    // baseUrl: "http://localhost:5000",
     prepareHeaders: (headers, { getState }) => {
       // Get the token from your Redux store or wherever it's stored
       const state = store.getState();
