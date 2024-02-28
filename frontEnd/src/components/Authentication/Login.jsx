@@ -34,7 +34,7 @@ const Login = () => {
     console.log("payload", payLoad);
     try {
       const { data } = await axios.post(
-        "/api/user/login",
+        process.env.REACT_APP_BASE_URL + "/api/user/login",
         payLoad
       );
       console.log("user", data);

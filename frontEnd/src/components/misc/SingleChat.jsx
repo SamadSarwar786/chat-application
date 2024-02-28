@@ -37,7 +37,7 @@ const SingleChat = ({ user, selectedChat }) => {
   useEffect(() => {
     setMessages(AllMessages);
   }, [AllMessages]);
-  const ENDPOINT = "http://localhost:5000";
+  const ENDPOINT = process.env.REACT_APP_BASE_URL;
 
   useEffect(() => {
     socket = io(ENDPOINT);
