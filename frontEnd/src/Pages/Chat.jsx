@@ -15,16 +15,18 @@ const Chat = () => {
   const { chats, selectedChat, singleChatStatus, chatsStatus } = useSelector(
     (state) => state.chat
   );
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     // Check if the user is not logged in
     if (!isLoggedIn) {
       // Navigate to the home page
-      navigate("/");
+      navigate("/", { replace: true });
     }
   }, [isLoggedIn, navigate]);
 
-  const [isOpen, setIsOpen] = useState(false);
+  if (!isLoggedIn) return <></>;
+
   return (
     <Box
       sx={{
