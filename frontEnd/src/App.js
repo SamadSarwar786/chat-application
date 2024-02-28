@@ -7,6 +7,7 @@ import { router } from "./Routes";
 import { Alert, CssBaseline, Snackbar } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { setErrorMessage } from "./store/userSlicer";
+import VideoBackground from "./components/VideoBackground/VideoBackground";
 
 function App() {
 
@@ -14,19 +15,19 @@ function App() {
   const dispatch = useDispatch();
 
   return (
-    <div className="App">
-      <CssBaseline />
-      <Snackbar
-        open={errorMessage !== ""}
-        autoHideDuration={3000}
-        onClose={() => dispatch(setErrorMessage(""))}
-      >
-        <Alert severity="error">
-         {errorMessage}
-        </Alert>
-      </Snackbar>
-      <Outlet />
-    </div>
+    <VideoBackground>
+      <div className="App">
+        <CssBaseline />
+        <Snackbar
+          open={errorMessage !== ""}
+          autoHideDuration={3000}
+          onClose={() => dispatch(setErrorMessage(""))}
+        >
+          <Alert severity="error">{errorMessage}</Alert>
+        </Snackbar>
+        <Outlet />
+      </div>
+    </VideoBackground>
   );
 }
 
