@@ -4,13 +4,13 @@ import {
   InputAdornment,
   Snackbar,
   Stack,
-  TextField,
 } from "@mui/material";
 import React, { useState } from "react";
 import axios from '../../utils/axios-instance'
 import { useNavigate } from "react-router-dom";
 import { login } from "../../store/userSlicer";
 import { useDispatch } from "react-redux";
+import { StyledTextField } from "./Login";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -88,7 +88,7 @@ const SignUp = () => {
   }
   return (
     <Stack spacing={1.5} mt="10px" direction="column">
-      <TextField
+      <StyledTextField
         required
         margin="normal"
         autoComplete="firstName"
@@ -98,7 +98,7 @@ const SignUp = () => {
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-      <TextField
+      <StyledTextField
         required
         margin="normal"
         autoComplete="email"
@@ -108,7 +108,7 @@ const SignUp = () => {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
-      <TextField
+      <StyledTextField
         required
         margin="normal"
         fullWidth
@@ -118,7 +118,7 @@ const SignUp = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <TextField
+      <StyledTextField
         required
         margin="normal"
         fullWidth
@@ -136,7 +136,7 @@ const SignUp = () => {
           ),
         }}
       />
-      <TextField
+      <StyledTextField
         required
         margin="normal"
         fullWidth

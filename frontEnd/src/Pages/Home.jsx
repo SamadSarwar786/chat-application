@@ -29,13 +29,14 @@ const Home = () => {
     setTabIndex(newValue);
   };
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="xl" sx={{ height: "100%", alignItems: "center" }}>
       <Box
         sx={{
           display: "flex",
           width: "400px",
           margin: "auto",
-          backgroundColor: "#ffffff",
+          color: "#fff",
+          border: "1px solid #fff",
           justifyContent: "center",
           p: "10px",
           borderRadius: "6px",
@@ -49,7 +50,8 @@ const Home = () => {
           flexDirection: "column",
           width: "400px",
           margin: "auto",
-          backgroundColor: "#ffffff",
+          color: "#fff",
+          border: "1px solid #fff",
           justifyContent: "center",
           p: "10px",
           borderRadius: "6px",
@@ -69,21 +71,31 @@ const Home = () => {
         >
           <Tab
             sx={
-              tabIndex === 0 && {
-                backgroundColor: "#e2f2ff",
-                color: "grey !important",
-                borderRadius: "10px",
-              }
+              tabIndex === 0
+                ? {
+                    border: "1px solid white",
+                    backgroundColor:'rgba(255, 255, 255, .2)',
+                    borderRadius: "10px",
+                    color: "white !important",
+                  }
+                : {
+                    color: "white",
+                  }
             }
             label="Login"
           />
           <Tab
             sx={
-              tabIndex === 1 && {
-                backgroundColor: "#e2f2ff",
-                color: "grey !important",
-                borderRadius: "10px",
-              }
+              tabIndex === 1
+                ? {
+                    border: "1px solid white",
+                    backgroundColor:'rgba(255, 255, 255, .2)',
+                    borderRadius: "10px",
+                    color: "white !important",
+                  }
+                : {
+                    color: "white",
+                  }
             }
             label="Sign Up"
           />

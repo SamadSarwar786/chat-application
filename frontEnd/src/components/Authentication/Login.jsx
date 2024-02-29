@@ -6,11 +6,26 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import React, { useState } from "react";
 import axios from "../../utils/axios-instance";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login, setToken } from "../../store/userSlicer";
+
+export const StyledTextField = styled(TextField)({
+  border: "1px solid #fff",
+  ".MuiOutlinedInput-input": {
+    color: "white",
+  },
+  ".MuiFormLabel-root": {
+    color: "white",
+  },
+  ".Mui-focused": {
+    color: "white",
+    border: "none !important",
+  },
+});
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -62,7 +77,7 @@ const Login = () => {
   };
   return (
     <Stack spacing={1.5} mt="10px" direction="column">
-      <TextField
+      <StyledTextField
         required
         margin="normal"
         autoComplete="email"
@@ -72,7 +87,7 @@ const Login = () => {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
-      <TextField
+      <StyledTextField
         required
         margin="normal"
         fullWidth
