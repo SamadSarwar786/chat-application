@@ -1,7 +1,8 @@
 const { generateAuthToken } = require("../config/generateAuthToken");
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
-const { options } = require("../routers/userRouter");
+const path = require("path");
+
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
@@ -19,14 +20,14 @@ const registerUser = asyncHandler(async (req, res) => {
     name,
     email,
     password,
-    // pic: req.file.buffer,
+    pic : path.join(__dirname + "../" + req.file.path),
   });
   if (user) {
     res.status(201).json({
       _id: user._id,
       name: user.name,
       email: user.email,
-      // pic: user.pic,
+      pic: user.pic,
       token: generateAuthToken(user._id),
       message: "Successfully Signed IN",
     });
@@ -44,7 +45,7 @@ const loginUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      // pic: user.pic,
+      pic: user.pic,
       token: generateAuthToken(user._id),
     });
   } else {

@@ -27,6 +27,20 @@ const SignUp = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // const convertBase64 = (file) => {  // basic way of uploading image first convert image into base64 then store directly in db.
+  //   return new Promise((resolve, reject) => {
+  //     const fileReader = new FileReader();
+  //     fileReader.readAsDataURL(file);
+
+  //     fileReader.onload = () => {
+  //       resolve(fileReader.result);
+  //     };
+
+  //     fileReader.onerror = (error) => {
+  //       reject(error);
+  //     };
+  //   });
+  // };
 
   const submitHandler = async () => {
     if (!name || !email || !password || !confirmPassword) {
@@ -34,11 +48,12 @@ const SignUp = () => {
       return;
     }
     setIsLoading(true);
+    // const base64Pic = await convertBase64(profilePic);
     // const payLoad = {
     //   name,
     //   email,
     //   password,
-    //   pic: profilePic,
+    //   pic: base64Pic,
     // };
     const formData = new FormData();
     formData.append("name", name);
@@ -53,12 +68,11 @@ const SignUp = () => {
       },
     };
     try {
-      const { user } = await axios.post(
+      const {data:user} = await axios.post(
         process.env.REACT_APP_BASE_URL + "/api/user",
         formData,
         config
       );
-      // localStorage.setItem("userInfo", JSON.stringify(data));
       const content = {
         user,
         token: user.token,
@@ -84,7 +98,6 @@ const SignUp = () => {
 
   const picHandler = (e) => {
     setProfilePic(e.target.files[0]);
-    console.log('images ',e.target.files[0]); 
   }
   return (
     <Stack spacing={1.5} mt="10px" direction="column">

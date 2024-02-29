@@ -4,7 +4,10 @@ import { useDispatch } from "react-redux";
 import { fetchSelectedChat } from "../../store/chatSlicer";
 
 const UserListItem = ({ user, handleFunction }) => {
-  const dispatch = useDispatch();
+  const base64String = user?.pic?.data
+    .map((byte) => String.fromCharCode(byte))
+    .join("");
+  const imageData = `${base64String}`;
 
   const handleSelect = () => {
     if (handleFunction){
@@ -31,7 +34,7 @@ const UserListItem = ({ user, handleFunction }) => {
         borderRadius: "6px",
       }}
     >
-      <Avatar sx={{ mr: 2 }} />
+       <Avatar sx={{ mr: 2 }}  src={imageData}/>
       <Box
         sx={{
           display: "flex",

@@ -11,6 +11,8 @@ const path = require('path');
 dotenv.config();
 connectDB();
 const app = express();
+// app.use(express.json({limit: '50mb'}));   this thing requied for maulo uploading of image into db not not on server
+// app.use(express.urlencoded({limit: '50mb', extended: true}));
 
 app.use(
   cors({

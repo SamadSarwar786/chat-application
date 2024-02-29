@@ -4,6 +4,10 @@ import ScrollableFeed from "react-scrollable-feed";
 import { isLastMessage, isSameSender, isSameSenderMargin, isSameUser } from "../../config/ChatLogic";
 
 const ScrollableChat = ({ messages, user }) => {
+  const base64String = user?.pic?.data
+  .map((byte) => String.fromCharCode(byte))
+  .join("");
+const imageData = `${base64String}`;
   return (
     <ScrollableFeed>
       {messages &&
@@ -18,7 +22,7 @@ const ScrollableChat = ({ messages, user }) => {
                   size="sm"
                   cursor="pointer"
                   name={m.sender.name}
-                //   src={m.sender.pic}
+                  src={imageData}
                 >
                     {m.sender.name.slice(0,1)}
                 </Avatar>
