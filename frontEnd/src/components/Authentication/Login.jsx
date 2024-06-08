@@ -67,12 +67,7 @@ const Login = () => {
       console.log("error", error);
       setIsError(true);
       setIsLoading(false);
-      const {
-        response: {
-          data: { message },
-        },
-      } = error;
-      setMessage(message || "Try again after some time");
+      setMessage("Try again after some time");
     }
   };
   return (

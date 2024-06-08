@@ -1,21 +1,24 @@
 // src/reducers/authSlice.js
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from '../utils/axios-instance';
-import { persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
-import { SEARCH_USERS } from '../utils/endPoints';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "../utils/axios-instance";
+import { persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import { SEARCH_USERS } from "../utils/endPoints";
 
 const authPersistConfig = {
-  key: 'auth',
+  key: "auth",
   storage,
-  whitelist: ['isLoggedIn', 'user', 'token'], // Include only these keys for persistence
+  whitelist: ["isLoggedIn", "user", "token"], // Include only these keys for persistence
 };
 
 export const fetchSearchUsers = createAsyncThunk(
   "chat/fetchSearchUsers",
-  async (query,thunkAPI) => {
+  async (query, thunkAPI) => {
     try {
-      const { data } = await axios.get(SEARCH_USERS+'?search='+query);
+      const { data } = await axios.get(
+        process.env.REACT_APP_BASE_URL + SEARCH_USERS + "?search=" + query
+      );
+      
       return data;
     } catch (error) {
       // Handle errors here
@@ -25,8 +28,15 @@ export const fetchSearchUsers = createAsyncThunk(
 );
 
 const authSlice = createSlice({
-  name: 'auth',
-  initialState: { isLoggedIn: false, user: null, token: null , searchResult : [], searchStatus :'idle', errorMessage:'' },
+  name: "auth",
+  initialState: {
+    isLoggedIn: false,
+    user: null,
+    token: null,
+    searchResult: [],
+    searchStatus: "idle",
+    errorMessage: "",
+  },
   reducers: {
     login: (state, action) => {
       state.isLoggedIn = true;
@@ -41,12 +51,12 @@ const authSlice = createSlice({
     setToken: (state, action) => {
       state.token = action.payload;
     },
-    resetSearch : (state,action) => {
+    resetSearch: (state, action) => {
       state.searchResult = [];
     },
-    setErrorMessage:(state,action) => {
+    setErrorMessage: (state, action) => {
       state.errorMessage = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -61,12 +71,16 @@ const authSlice = createSlice({
         state.searchStatus = "failed";
         state.error = action.payload.error;
       });
-    }
+  },
 });
 
-const persistedAuthReducer = persistReducer(authPersistConfig, authSlice.reducer);
+const persistedAuthReducer = persistReducer(
+  authPersistConfig,
+  authSlice.reducer
+);
 
-export const { login, logout, setToken,resetSearch , setErrorMessage} = authSlice.actions;
+export const { login, logout, setToken, resetSearch, setErrorMessage } =
+  authSlice.actions;
 
 export const selectIsLoggedIn = (state) => state.auth.isLoggedIn;
 export const getUser = (state) => state.auth.user;

@@ -1,9 +1,9 @@
 import { Avatar, Box, Typography } from "@mui/material";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { fetchSelectedChat } from "../../store/chatSlicer";
+import { useFetchSelectedChatMutation} from "../../store/Rtk/fetchAllChats";
 
 const UserListItem = ({ user, handleFunction }) => {
+  const [fetchSelectedChat] = useFetchSelectedChatMutation();
   const base64String = user?.pic?.data
     .map((byte) => String.fromCharCode(byte))
     .join("");
@@ -13,7 +13,7 @@ const UserListItem = ({ user, handleFunction }) => {
     if (handleFunction){
       handleFunction();
     }
-    // dispatch(fetchSelectedChat(user._id));
+    else fetchSelectedChat({userId :user._id});
   };
 
   return (

@@ -18,10 +18,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { addNotification } from "../../store/chatSlicer";
 const io = require("socket.io-client");
 var socket, selectedChatCompare;
-
+let typingTimer;
 const SingleChat = ({ user, selectedChat }) => {
   const [newMessage, setNewMessage] = useState("");
-  console.log("newMessage", newMessage);
   const [messages, setMessages] = useState([]);
   const [socketConnected, setSocketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
@@ -35,13 +34,14 @@ const SingleChat = ({ user, selectedChat }) => {
   const [sendMessage, { isLoading }] = useSendMessageMutation();
   const { notification } = useSelector((state) => state.chat);
   useEffect(() => {
-    setMessages(AllMessages);
+    if (AllMessages.length > 0) setMessages(AllMessages);
   }, [AllMessages]);
   const ENDPOINT = process.env.REACT_APP_BASE_URL;
+  console.log('endpoint', ENDPOINT);
 
   useEffect(() => {
     socket = io(ENDPOINT);
-    socket.emit("setup", user);
+    socket.emit("setup", user._id);
     socket.on("connected", () => setSocketConnected(true));
     socket.on("typing", () => {
       console.log("inside on Typing");
@@ -50,7 +50,7 @@ const SingleChat = ({ user, selectedChat }) => {
     socket.on("stop typing", () => {
       console.log("inside on stopTyping");
       setIsTyping(false);
-    });
+  });
 
     return () => {
       socket.off("connected");
@@ -84,49 +84,34 @@ const SingleChat = ({ user, selectedChat }) => {
       }
     });
   }
-  let typingTimer;
+
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       sendMessageHandler();
       return;
     }
-    // setNewMessage(e.currentTarget.value);
-    // console.log('data', e.target.value);
-    // clearTimeout(typingTimer);
-    // if (!socketConnected) return;
-    // if (!typing) {
-    //   setTyping(true);
-    //   socket.emit("typing", selectedChat._id);
-    // }
   };
-  // const handleKeyUp = (e) => {
-  //   typingTimer = setTimeout(() => {
-  //     console.log("inside on setTimeOut for setting stop typing");
-  //     setTyping(false);
-  //     socket.emit("stop typing", selectedChat._id);
-  //   }, 3000);
-  // };
+
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
 
     if (!socketConnected) return;
-
     if (!typing) {
       setTyping(true);
       socket.emit("typing", selectedChat._id);
     }
-    let lastTypingTime = new Date().getTime();
-    var timerLength = 3000;
     clearTimeout(typingTimer);
     typingTimer = setTimeout(() => {
-      var timeNow = new Date().getTime();
-      var timeDiff = timeNow - lastTypingTime;
-      if (timeDiff >= timerLength && typing) {
-        console.log("inside on setTimeOut");
-        socket.emit("stop typing", selectedChat._id);
-        setTyping(false);
-      }
-    }, timerLength);
+      socket.emit("stop typing", selectedChat._id);
+      setTyping(false);
+    }, 4000);
+  };
+
+  const onBlurHandler = () => {
+    if (typing) {
+      socket.emit("stop typing", selectedChat._id);
+      setTyping(false);
+    }
   };
 
   // create a typing handler function that after 3 seconds will emit a stop typing event if user is not typing
@@ -201,7 +186,7 @@ const SingleChat = ({ user, selectedChat }) => {
         <TextField
           onChange={typingHandler}
           onKeyDown={handleKeyDown}
-          // onKeyUp={handleKeyUp}
+          onBlur={onBlurHandler}
           margin="dense"
           value={newMessage}
           fullWidth

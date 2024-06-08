@@ -114,6 +114,13 @@ export const api = createApi({
       }),
       providesTags: ["Messages"],
     }),
+    fetchSelectedChat: builder.mutation({
+      query: (payload) => ({
+        url: ACCESS_AND_FETCH_CHAT,
+        method: "POST",
+        body: payload,
+      }),
+    }),
   }),
 });
 
@@ -124,4 +131,5 @@ export const {
   useLeaveGrpMutation,
   useSendMessageMutation,
   useGetAllMessagesQuery,
+  useFetchSelectedChatMutation,
 } = api;

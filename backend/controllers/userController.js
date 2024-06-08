@@ -57,7 +57,6 @@ const loginUser = asyncHandler(async (req, res) => {
 // /api/user?search=piyush
 const searchUsers = async (req, res) => {
   const query = req.query.search;
-  // console.log("user in searchUsers ", req.user);
   if (!query) {
     res.status(200).send([]);
     return;
