@@ -11,11 +11,12 @@ import ChatLoading from "./ChatLoading";
 import UserListItem from "./UserListItem";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSearchUsers, resetSearch } from "../../store/userSlicer";
+import { useFetchSelectedChatMutation } from "../../store/Rtk/fetchAllChats";
 
-export const SideDrawer = () => {
+export const SideDrawer = ({onClose}) => {
   const [search, setSearch] = useState("");
   const [loadingChat, setLoadingChat] = useState(false);
-
+  const [fetchSelectedChat] = useFetchSelectedChatMutation();
   const dispatch = useDispatch();
   const { searchResult, searchStatus } = useSelector((state) => state.auth);
   // /api/user?search=piyush
@@ -38,6 +39,10 @@ export const SideDrawer = () => {
     else dispatch(fetchSearchUsers(search));
   }, [search]);
 
+  const onUserListItemClickHandler = (user) => {
+    fetchSelectedChat({userId:user._id});
+    onClose && onClose();
+  }
   return (
     <Box
       sx={{
@@ -69,7 +74,7 @@ export const SideDrawer = () => {
           alignContent="center"
         >
           {searchResult.map((user, index) => (
-            <UserListItem user={user} />
+            <UserListItem key={index} user={user} handleFunction={() => onUserListItemClickHandler(user)} />
           ))}
           {loadingChat && (
             <Box sx={{ display: "flex", justifyContent: "center" }}>

@@ -1,19 +1,13 @@
 import { Avatar, Box, Typography } from "@mui/material";
 import React from "react";
-import { useFetchSelectedChatMutation} from "../../store/Rtk/fetchAllChats";
-
 const UserListItem = ({ user, handleFunction }) => {
-  const [fetchSelectedChat] = useFetchSelectedChatMutation();
   const base64String = user?.pic?.data
     .map((byte) => String.fromCharCode(byte))
     .join("");
   const imageData = `${base64String}`;
 
   const handleSelect = () => {
-    if (handleFunction){
-      handleFunction();
-    }
-    else fetchSelectedChat({userId :user._id});
+    handleFunction && handleFunction();
   };
 
   return (
@@ -34,7 +28,7 @@ const UserListItem = ({ user, handleFunction }) => {
         borderRadius: "6px",
       }}
     >
-       <Avatar sx={{ mr: 2 }}  src={imageData}/>
+      <Avatar sx={{ mr: 2 }} src={imageData} />
       <Box
         sx={{
           display: "flex",

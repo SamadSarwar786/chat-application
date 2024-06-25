@@ -38,7 +38,7 @@ const Chat = () => {
     >
       <Header openDrawer={setIsOpen} />
       <Drawer anchor="left" open={isOpen} onClose={() => setIsOpen(false)}>
-        <SideDrawer />
+        <SideDrawer onClose={() => setIsOpen(false)}/>
       </Drawer>
       <Box sx={{ p: "10px", height: "calc(100vh - 61px)" }}>
         <Grid sx={{ height: "100%" }} container spacing="10px">
