@@ -102,13 +102,13 @@ export const MyChats = () => {
               }}
             >
               <Avatar
-                {...stringAvatar(getSender(user, chat.users).name)}
+                {...stringAvatar(chat.isGroupChat ? chat.chatName  : chat.users[1].name)}
                 size="sm"
                 cursor="pointer"
-                name={getSender(user, chat.users).name}
+                name={chat.isGroupChat ? chat.chatName  : chat.users[1].name}
                 src={
-                  getSender(user, chat.users).pic && !chat.isGroupChat
-                    ? `${process.env.REACT_APP_BASE_URL}${user.pic}`
+                  chat.users[1].pic && !chat.isGroupChat
+                    ? `${process.env.REACT_APP_BASE_URL}${chat.users[1].pic}`
                     : ""
                 }
                 alt="userPic"
