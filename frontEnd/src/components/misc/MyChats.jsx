@@ -14,8 +14,6 @@ export const MyChats = () => {
   const { user } = useSelector((state) => state.auth);
   const { data, error, isLoading, refetch } = useFetchDataQuery();
 
-  console.log('data', data);
-
   // useEffect(() => {
   //   dispatch(fetchAllChats());
   // }, []);
@@ -81,10 +79,15 @@ export const MyChats = () => {
         {!isLoading ? (
           (data || []).map((chat) => (
             <Box
-              onClick={() => dispatch(setSelectedChat(chat))}
+              onClick={() => {
+                dispatch(setSelectedChat(chat));
+                refetch();
+              }}
               sx={{
                 cursor: "pointer",
-                bgcolor: `${selectedChat?._id === chat._id ? "#38b2ac" : "#e8e8e8"}`,
+                bgcolor: `${
+                  selectedChat?._id === chat._id ? "#38b2ac" : "#e8e8e8"
+                }`,
                 color: `${selectedChat?._id === chat._id ? "white" : "black"}`,
                 px: 2,
                 py: 1,
@@ -99,9 +102,9 @@ export const MyChats = () => {
               <Typography>
                 <b>
                   {(chat.latestMessage && chat.latestMessage?.sender.name) ||
-                    "Salman Khan"}
+                    ""}
                 </b>{" "}
-                {(chat.latestMessage && chat.latestMessage?.content) || "Hi"}
+                {(chat.latestMessage && chat.latestMessage?.content) || ""}
               </Typography>
             </Box>
           ))
