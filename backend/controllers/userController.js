@@ -15,12 +15,13 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error("User already exist");
   }
   // console.log("request", req.file);
+  const imageUrl = req.file ? `/uploads/${req.file.filename}` : '';
 
   const user = await User.create({
     name,
     email,
     password,
-    pic : path.join(__dirname + "../" + req.file.path),
+    pic : imageUrl,
   });
   if (user) {
     res.status(201).json({

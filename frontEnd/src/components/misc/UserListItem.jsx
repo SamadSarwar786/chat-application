@@ -1,15 +1,10 @@
 import { Avatar, Box, Typography } from "@mui/material";
 import React from "react";
 const UserListItem = ({ user, handleFunction }) => {
-  const base64String = user?.pic?.data
-    .map((byte) => String.fromCharCode(byte))
-    .join("");
-  const imageData = `${base64String}`;
 
   const handleSelect = () => {
     handleFunction && handleFunction();
   };
-
   return (
     <Box
       onClick={handleSelect}
@@ -28,7 +23,7 @@ const UserListItem = ({ user, handleFunction }) => {
         borderRadius: "6px",
       }}
     >
-      <Avatar sx={{ mr: 2 }} src={imageData} />
+      <Avatar sx={{ mr: 2 }} src={user.pic ? `${process.env.REACT_APP_BASE_URL}${user.pic}` : ""} alt="userPic" />
       <Box
         sx={{
           display: "flex",
