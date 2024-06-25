@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Avatar, Box, Button, Container, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,6 +6,7 @@ import { fetchAllChats, setSelectedChat } from "../../store/chatSlicer";
 import { getSender } from "../../config/ChatLogic";
 import NewGroupModal from "./NewGroupModal";
 import { useFetchDataQuery } from "../../store/Rtk/fetchAllChats";
+import { stringAvatar } from "./ScrollableChat";
 export const MyChats = () => {
   const dispatch = useDispatch();
   const { chats, selectedChat, singleChatStatus, chatsStatus } = useSelector(
@@ -92,20 +93,41 @@ export const MyChats = () => {
                 px: 2,
                 py: 1,
                 borderRadius: "6px",
+                display: "flex",
+                alignItems: "center",
+                "&:hover": {
+                  bgcolor: "#38B2AC",
+                  color: "white",
+                },
               }}
             >
-              <Typography>
-                {chat.isGroupChat
-                  ? chat.chatName
-                  : getSender(user, chat.users).name}
-              </Typography>
-              <Typography>
-                <b>
-                  {(chat.latestMessage && chat.latestMessage?.sender.name) ||
-                    ""}
-                </b>{" "}
-                {(chat.latestMessage && chat.latestMessage?.content) || ""}
-              </Typography>
+              <Avatar
+                {...stringAvatar(getSender(user, chat.users).name)}
+                size="sm"
+                cursor="pointer"
+                name={getSender(user, chat.users).name}
+                src={
+                  getSender(user, chat.users).pic && !chat.isGroupChat
+                    ? `${process.env.REACT_APP_BASE_URL}${user.pic}`
+                    : ""
+                }
+                alt="userPic"
+              />
+              <Container>
+                <Typography>
+                  {chat.isGroupChat
+                    ? chat.chatName
+                    : getSender(user, chat.users).name}
+                </Typography>
+                <Typography>
+                  <b>
+                    {(chat.latestMessage && chat.latestMessage?.sender.name) ||
+                      ""}
+                  </b>{" "}
+                  {(chat.latestMessage && chat.latestMessage?.content) ||
+                    "No latest Message"}
+                </Typography>
+              </Container>
             </Box>
           ))
         ) : (

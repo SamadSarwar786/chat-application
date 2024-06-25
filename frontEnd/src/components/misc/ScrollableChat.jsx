@@ -27,7 +27,7 @@ function stringToColor(string) {
   return color;
 }
 
-function stringAvatar(name) {
+export function stringAvatar(name) {
   const [firstName='', lastName=''] = name.split(" ");
   console.log('firstName',firstName, lastName);
   return {
