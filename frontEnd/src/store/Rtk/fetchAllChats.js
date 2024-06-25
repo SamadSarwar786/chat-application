@@ -120,6 +120,7 @@ export const api = createApi({
         method: "POST",
         body: payload,
       }),
+      invalidatesTags: ["Chats"],
     }),
   }),
 });

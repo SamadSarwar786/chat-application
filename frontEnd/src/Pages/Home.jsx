@@ -32,7 +32,7 @@ const Home = () => {
         <Box
           sx={{
             display: "flex",
-            width: "400px",
+            maxWidth: "400px",
             margin: "auto",
             color: "#fff",
             border: "1px solid #fff",
@@ -48,7 +48,7 @@ const Home = () => {
           sx={{
             display: "flex",
             flexDirection: "column",
-            width: "400px",
+            maxWidth: "400px",
             margin: "auto",
             color: "#fff",
             border: "1px solid #fff",

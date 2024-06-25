@@ -16,14 +16,16 @@ import { login, setToken } from "../../store/userSlicer";
 export const StyledTextField = styled(TextField)({
   border: "1px solid #fff",
   ".MuiOutlinedInput-input": {
-    color: "white",
+    color: "white !important`",
   },
   ".MuiFormLabel-root": {
-    color: "white",
+    color: "white !important",
   },
   ".Mui-focused": {
-    color: "white",
-    border: "none !important",
+    color: "white !important",
+    border: "white !important",
+    outline: 'white !important'
+    ,
   },
 });
 
