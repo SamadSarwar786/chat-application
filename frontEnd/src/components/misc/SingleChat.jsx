@@ -16,9 +16,126 @@ import Lottie from "react-lottie";
 import typingAnimationData from "../../animation/typing.json";
 import { useDispatch, useSelector } from "react-redux";
 import { addNotification } from "../../store/chatSlicer";
+import { styled } from "@mui/material/styles";
 const io = require("socket.io-client");
 var socket, selectedChatCompare;
 let typingTimer;
+
+const StyledChatContainer = styled(Box)(({ theme }) => ({
+  height: "100%",
+  background: "transparent",
+  padding: "0px",
+  borderRadius: "12px",
+  display: "flex",
+  flexDirection: "column",
+  gap: "12px",
+}));
+
+const StyledMessagesContainer = styled(Box)(({ theme }) => ({
+  flex: 1,
+  background: "rgba(255, 255, 255, 0.05)",
+  backdropFilter: "blur(10px)",
+  border: "1px solid rgba(255, 255, 255, 0.1)",
+  borderRadius: "12px",
+  padding: "16px",
+  overflowY: "auto",
+  height: "100%",
+  minHeight: "200px",
+  maxHeight: "calc(100vh - 300px)",
+  '&::-webkit-scrollbar': {
+    width: '6px',
+  },
+  '&::-webkit-scrollbar-track': {
+    background: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: '10px',
+  },
+  '&::-webkit-scrollbar-thumb': {
+    background: 'rgba(255, 255, 255, 0.3)',
+    borderRadius: '10px',
+    '&:hover': {
+      background: 'rgba(255, 255, 255, 0.5)',
+    },
+  },
+}));
+
+const StyledLoadingContainer = styled(Box)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  height: "100%",
+  '& .MuiCircularProgress-root': {
+    color: 'rgba(255, 255, 255, 0.7)',
+  },
+}));
+
+const StyledMessageInput = styled(TextField)(({ theme }) => ({
+  '& .MuiOutlinedInput-root': {
+    background: 'rgba(255, 255, 255, 0.1)',
+    backdropFilter: 'blur(10px)',
+    borderRadius: '24px',
+    color: 'white',
+    border: '1px solid rgba(255, 255, 255, 0.2)',
+    minHeight: '48px',
+    display: 'flex',
+    alignItems: 'center',
+    '& fieldset': {
+      border: 'none',
+    },
+    '&:hover': {
+      background: 'rgba(255, 255, 255, 0.15)',
+    },
+    '&.Mui-focused': {
+      background: 'rgba(255, 255, 255, 0.15)',
+      border: '1px solid rgba(63, 81, 181, 0.5)',
+    },
+  },
+  '& .MuiInputBase-input': {
+    color: 'white',
+    fontSize: '16px',
+    padding: '10px 16px',
+    lineHeight: '1.5',
+    '&::placeholder': {
+      color: 'rgba(255, 255, 255, 0.7)',
+      opacity: 1,
+    },
+  },
+  '& .MuiInputAdornment-root': {
+    color: 'rgba(255, 255, 255, 0.7)',
+    margin: '0',
+    alignSelf: 'center',
+    display: 'flex',
+    alignItems: 'center',
+    height: '100%',
+  },
+}));
+
+const StyledSendButton = styled(IconButton)(({ theme }) => ({
+  background: 'linear-gradient(135deg, #3f51b5 0%, #2196f3 100%)',
+  color: 'white',
+  borderRadius: '50%',
+  width: '40px',
+  height: '40px',
+  margin: '0 4px',
+  boxShadow: '0 4px 15px rgba(63, 81, 181, 0.3)',
+  '&:hover': {
+    background: 'linear-gradient(135deg, #303f9f 0%, #1976d2 100%)',
+    boxShadow: '0 6px 20px rgba(63, 81, 181, 0.4)',
+  },
+  '&:disabled': {
+    background: 'rgba(255, 255, 255, 0.2)',
+    color: 'rgba(255, 255, 255, 0.5)',
+  },
+}));
+
+const TypingContainer = styled(Box)(({ theme }) => ({
+  padding: '8px 16px',
+  background: 'rgba(255, 255, 255, 0.1)',
+  borderRadius: '20px',
+  display: 'inline-block',
+  marginBottom: '8px',
+  border: '1px solid rgba(255, 255, 255, 0.1)',
+}));
+
 const SingleChat = ({ user, selectedChat }) => {
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([]);
@@ -33,24 +150,23 @@ const SingleChat = ({ user, selectedChat }) => {
   } = useGetAllMessagesQuery(selectedChat?._id, { skip: !selectedChat });
   const [sendMessage, { isLoading }] = useSendMessageMutation();
   const { notification } = useSelector((state) => state.chat);
+
   useEffect(() => {
     if (AllMessages.length > 0) setMessages(AllMessages);
   }, [AllMessages]);
+
   const ENDPOINT = process.env.REACT_APP_BASE_URL;
-  console.log('endpoint', ENDPOINT);
 
   useEffect(() => {
     socket = io(ENDPOINT);
     socket.emit("setup", user._id);
     socket.on("connected", () => setSocketConnected(true));
     socket.on("typing", () => {
-      console.log("inside on Typing");
       setIsTyping(true);
     });
     socket.on("stop typing", () => {
-      console.log("inside on stopTyping");
       setIsTyping(false);
-  });
+    });
 
     return () => {
       socket.off("connected");
@@ -58,21 +174,18 @@ const SingleChat = ({ user, selectedChat }) => {
       socket.off("stop typing");
       socket.disconnect();
     };
-
-    //eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     refetch();
     socket.emit("join chat", selectedChat._id);
     selectedChatCompare = selectedChat;
-    // eslint-disable-next-line
   }, [selectedChat]);
-  console.log("notification", notification);
+
   if (socket) {
     socket.on("message recieved", (newMessageRecieved) => {
       if (
-        !selectedChatCompare || // if chat is not selected or doesn't match current chat
+        !selectedChatCompare ||
         selectedChatCompare._id !== newMessageRecieved.chat._id
       ) {
         if (!notification.includes(newMessageRecieved)) {
@@ -86,7 +199,8 @@ const SingleChat = ({ user, selectedChat }) => {
   }
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
       sendMessageHandler();
       return;
     }
@@ -114,12 +228,8 @@ const SingleChat = ({ user, selectedChat }) => {
     }
   };
 
-  // create a typing handler function that after 3 seconds will emit a stop typing event if user is not typing
-  // and emit a typing event if user is typing
-
-  const sendMessageHandler = async (e) => {
-    console.log("inside sendMessageHandler", newMessage);
-    if (newMessage) {
+  const sendMessageHandler = async () => {
+    if (newMessage.trim()) {
       const payLoad = {
         content: newMessage,
         chatId: selectedChat._id,
@@ -134,7 +244,8 @@ const SingleChat = ({ user, selectedChat }) => {
       }
     }
   };
-  if (!socketConnected) return;
+
+  if (!socketConnected) return null;
 
   const defaultOptions = {
     loop: true,
@@ -144,72 +255,70 @@ const SingleChat = ({ user, selectedChat }) => {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
+
   return (
-    <Box
-      sx={{
-        height: "calc(100% - 50px)",
-        backgroundColor: "lightgray",
-        py: "5px",
-        px: "10px",
-        borderRadius: "6px",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-      }}
-    >
-      {messagesLoading ? (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            alignContent: "center",
-            height: "100%",
-          }}
-        >
-          <CircularProgress />
-        </Box>
-      ) : (
-        <ScrollableChat user={user} messages={messages} />
-      )}
-      <>
-        {isTyping && (
-          <div>
-            <Lottie
-              options={defaultOptions}
-              width={70}
-              height={40}
-              style={{ margin: 0 }}
-            />
-          </div>
+    <StyledChatContainer>
+      <StyledMessagesContainer>
+        {messagesLoading ? (
+          <StyledLoadingContainer>
+            <CircularProgress size={40} />
+          </StyledLoadingContainer>
+        ) : (
+          <>
+            <ScrollableChat user={user} messages={messages} />
+            {isTyping && (
+              <TypingContainer>
+                <Lottie
+                  options={defaultOptions}
+                  width={60}
+                  height={30}
+                  style={{ margin: 0 }}
+                />
+              </TypingContainer>
+            )}
+          </>
         )}
-        <TextField
+      </StyledMessagesContainer>
+
+      <Box 
+        sx={{ 
+          display: "flex", 
+          gap: 1, 
+          alignItems: "flex-end",
+          flexShrink: 0,
+          minHeight: "60px",
+          padding: "8px 0",
+        }}
+      >
+        <StyledMessageInput
           onChange={typingHandler}
           onKeyDown={handleKeyDown}
           onBlur={onBlurHandler}
-          margin="dense"
           value={newMessage}
           fullWidth
-          placeholder="Enter a message"
+          placeholder="Type a message..."
+          variant="outlined"
+          multiline
+          maxRows={3}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
                 {isLoading ? (
-                  <CircularProgress />
+                  <CircularProgress size={24} sx={{ color: 'rgba(255, 255, 255, 0.7)' }} />
                 ) : (
-                  <IconButton
+                  <StyledSendButton
                     onClick={sendMessageHandler}
-                    // onMouseDown={handleMouseDownPassword}
+                    disabled={!newMessage.trim()}
                   >
-                    <SendIcon color="primary" />
-                  </IconButton>
+                    <SendIcon />
+                  </StyledSendButton>
                 )}
               </InputAdornment>
             ),
           }}
         />
-      </>
-    </Box>
+      </Box>
+    </StyledChatContainer>
   );
 };
 

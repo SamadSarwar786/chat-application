@@ -67,7 +67,7 @@ else{
 app.use(notFound);
 app.use(errorHandler);
 
-const server = app.listen(5000, console.log("app running on port 5000"));
+const server = app.listen(process.env.PORT, console.log(`app running on port ${process.env.PORT}`));
 // const io = Server(server, {});
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
