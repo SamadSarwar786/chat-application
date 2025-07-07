@@ -9,13 +9,15 @@ import { styled } from "@mui/material/styles";
 import { Chat as ChatIcon, Message as MessageIcon } from "@mui/icons-material";
 
 const StyledContainer = styled(Container)(({ theme }) => ({
-  height: "100vh",
+  minHeight: "100vh",
+  height: "100%",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
   position: "relative",
-  overflow: "hidden",
+  padding: "20px",
+  boxSizing: "border-box",
   "&::before": {
     content: '""',
     position: "absolute",

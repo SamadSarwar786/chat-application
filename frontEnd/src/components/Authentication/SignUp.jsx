@@ -130,16 +130,6 @@ const SignUp = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Box sx={{ textAlign: 'center', mb: 3 }}>
-        <PersonAddIcon sx={{ fontSize: 40, color: '#3f51b5', mb: 1 }} />
-        <Typography variant="h5" sx={{ color: 'white', fontWeight: 'bold', mb: 1 }}>
-          Create Account
-        </Typography>
-        <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-          Join us and start chatting
-        </Typography>
-      </Box>
-
       {isLoading && (
         <LinearProgress 
           sx={{ 

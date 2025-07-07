@@ -139,16 +139,6 @@ const Login = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Box sx={{ textAlign: 'center', mb: 3 }}>
-        <LoginIcon sx={{ fontSize: 40, color: '#3f51b5', mb: 1 }} />
-        <Typography variant="h5" sx={{ color: 'white', fontWeight: 'bold', mb: 1 }}>
-          Welcome Back
-        </Typography>
-        <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-          Sign in to your account
-        </Typography>
-      </Box>
-
       <Stack spacing={3}>
         <StyledTextField
           required
